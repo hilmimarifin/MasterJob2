@@ -42,4 +42,9 @@
         public string Nik { get; set; } = null!;
 
     }
+
+    public class EmployeeDeleteDTO
+    {
+        public string Id { get; set; } = null!;
+    }
 }

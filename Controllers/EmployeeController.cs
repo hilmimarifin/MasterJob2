@@ -73,20 +73,15 @@ namespace MasterJob.Controllers
             return HttpStatusCode.OK;
         }
 
-        [HttpDelete("/employee/{Id}")]
-        public async Task<HttpStatusCode> Delete(string Id)
+        [HttpDelete("/employee/delete")]
+        public async Task<HttpStatusCode> Delete(EmployeeDeleteDTO employee)
         {
-            var employee1 = await masterJobContext.Employees.FirstOrDefaultAsync(s => s.Id == Id);
+            var employee1 = await masterJobContext.Employees.FirstOrDefaultAsync(s => s.Id == employee.Id);
             if (employee1 == null)
             {
                 return HttpStatusCode.NotFound;
             }
-            var employee = new Employee()
-            {
-                Id = Id,
-            };
-            masterJobContext.Employees.Attach(employee);
-            masterJobContext.Remove(employee);
+            masterJobContext.Remove(employee1);
             await masterJobContext.SaveChangesAsync();
             return HttpStatusCode.OK;
         }
