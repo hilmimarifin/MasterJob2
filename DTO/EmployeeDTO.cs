@@ -10,6 +10,8 @@
 
         public string? JobTitleId { get; set; }
 
+        public string? JobTitleName { get; set; }
+
         public string? Address { get; set; }
 
         public string Nik { get; set; } = null!;
@@ -22,7 +24,7 @@
         public string Nik { get; set; } = null!;
         public string? JobPositionId { get; set; }
 
-        public string? JobTitleId { get; set; }
+        //public string? JobTitleId { get; set; }
 
         public string? Address { get; set; }
 
@@ -33,7 +35,7 @@
 
         public string Name { get; set; } = null!;
 
-        public string? JobTitleId { get; set; }
+        //public string? JobTitleId { get; set; }
 
         public string? JobPositionId { get; set; }
 

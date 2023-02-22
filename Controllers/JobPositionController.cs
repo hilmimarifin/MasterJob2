@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
+using static System.Reflection.Metadata.BlobBuilder;
 
 namespace MasterJob.Controllers
 {
@@ -19,14 +20,17 @@ namespace MasterJob.Controllers
             this.masterJobContext = masterJobContext;
         }
         [HttpGet("/job-position")]
-        public async Task<ActionResult<List<JobTitleDTO>>> GetAll()
+        public async Task<ActionResult<List<JobPositionDTO>>> GetAll()
         {
-            var List = await masterJobContext.JobPositions.Select(x => new JobPositionDTO
+            var List = await masterJobContext.JobPositions
+                .Include(i => i.Title)
+                .Select(x => new JobPositionDTO
             {
                 Id = x.Id,
                 Name = x.Name,
-                TitleId= x.TitleId,
+                TitleId = x.TitleId,
                 Code = x.Code,
+                TitleName = x.Title.Name
             }).ToListAsync();
 
             if (List.Count < 0)
@@ -81,7 +85,7 @@ namespace MasterJob.Controllers
             return HttpStatusCode.OK;
         }
 
-        [HttpDelete("/job-position/{Id}")]
+        [HttpDelete("/job-position/delete")]
         public async Task<HttpStatusCode> Delete(JobPositionDeleteDTO jobPosition)
         {
             var title1 = await masterJobContext.JobPositions.FirstOrDefaultAsync(s => s.Id == jobPosition.Id);

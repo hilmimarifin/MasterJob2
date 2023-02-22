@@ -49,6 +49,11 @@ public partial class MasterJobContext : DbContext
             entity.Property(e => e.Nik)
                 .HasColumnType("character varying")
                 .HasColumnName("nik");
+
+            entity.HasOne(d => d.JobPosition).WithMany(p => p.Employees)
+                .HasForeignKey(d => d.JobPositionId)
+                .OnDelete(DeleteBehavior.Restrict)
+                .HasConstraintName("employee_fk");
         });
 
         modelBuilder.Entity<JobPosition>(entity =>
@@ -69,6 +74,11 @@ public partial class MasterJobContext : DbContext
             entity.Property(e => e.TitleId)
                 .HasColumnType("character varying")
                 .HasColumnName("title_id");
+
+            entity.HasOne(d => d.Title).WithMany(p => p.JobPositions)
+                .HasForeignKey(d => d.TitleId)
+                .OnDelete(DeleteBehavior.Restrict)
+                .HasConstraintName("job_position_fk");
         });
 
         modelBuilder.Entity<JobTitle>(entity =>

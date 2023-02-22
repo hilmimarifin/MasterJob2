@@ -16,4 +16,6 @@ public partial class Employee
     public string? Address { get; set; }
 
     public string Nik { get; set; } = null!;
+
+    public virtual JobPosition? JobPosition { get; set; }
 }

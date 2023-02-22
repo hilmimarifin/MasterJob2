@@ -28,7 +28,7 @@ namespace MasterJob.Controllers
                 Name= employee.Name,
                 Address= employee.Address,
                 Nik = employee.Nik,
-                JobTitleId= employee.JobTitleId,
+                //JobTitleId= employee.JobTitleId,
                 JobPositionId= employee.JobPositionId,
             };
             masterJobContext.Employees.Add(newEmployee);
@@ -39,15 +39,20 @@ namespace MasterJob.Controllers
         [HttpGet("/employee")]
         public async Task<ActionResult<List<EmployeeDTO>>> GetAll()
         {
-            var List = await masterJobContext.Employees.Select(x => new EmployeeDTO
+            var List = await masterJobContext.Employees
+                .Include(employee => employee.JobPosition)
+                .ThenInclude(jobPos => jobPos.Title)
+                .Select(x => new EmployeeDTO
             {
                 Id = x.Id,
                 Name = x.Name,
                 JobPositionId  = x.JobPositionId,
-                JobTitleId= x.JobTitleId,
+                JobTitleId= x.JobPosition.Title.Id,
+                JobTitleName = x.JobPosition.Title.Name,
                 Nik = x.Nik,
                 Address= x.Address,
-            }).ToListAsync();
+            })
+                .ToListAsync();
 
             if (List.Count < 0)
             {
@@ -68,7 +73,7 @@ namespace MasterJob.Controllers
             employee1.Name = employee.Name;
             employee1.Address = employee.Address;
             employee1.JobPositionId = employee.JobPositionId;
-            employee1.JobTitleId= employee.JobTitleId;
+            //employee1.JobTitleId= employee.JobTitleId;
             await masterJobContext.SaveChangesAsync();
             return HttpStatusCode.OK;
         }

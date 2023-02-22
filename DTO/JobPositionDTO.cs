@@ -9,6 +9,8 @@
         public string Name { get; set; } = null!;
         public string? TitleId { get; set; }
 
+        public string? TitleName { get; set; }
+
     }
 
     public class JobPositionEditDTO

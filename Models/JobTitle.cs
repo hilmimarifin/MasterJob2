@@ -10,4 +10,6 @@ public partial class JobTitle
     public string Id { get; set; } = null!;
 
     public string Name { get; set; } = null!;
+
+    public virtual ICollection<JobPosition> JobPositions { get; } = new List<JobPosition>();
 }
