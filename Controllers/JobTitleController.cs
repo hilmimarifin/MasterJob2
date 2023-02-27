@@ -79,18 +79,25 @@ namespace MasterJob.Controllers
         }
 
         [HttpDelete("/job-title/delete")]
-        public async Task<HttpStatusCode> Delete(JobTitleDeleteDTO jobTitle)
+        public async Task<IActionResult> Delete(JobTitleDeleteDTO jobTitle)
         {
-            Console.WriteLine("is this trigered {0}", jobTitle.Id);
-
-            var title1 = await masterJobContext.JobTitles.FirstOrDefaultAsync(s => s.Id == jobTitle.Id);
-            if (title1 == null)
+            try
             {
-              return HttpStatusCode.NotFound;
+                Console.WriteLine("is this trigered {0}", jobTitle.Id);
+
+                var title1 = await masterJobContext.JobTitles.FirstOrDefaultAsync(s => s.Id == jobTitle.Id);
+                if (title1 == null)
+                {
+                    return NotFound();
+                }
+                masterJobContext.Remove(title1);
+                await masterJobContext.SaveChangesAsync();
+                return Ok();
             }
-            masterJobContext.Remove(title1);
-            await masterJobContext.SaveChangesAsync();
-            return HttpStatusCode.OK;
+            catch (Exception msg)
+            {
+                return StatusCode(500, msg);
+            }
         }
     }
 }

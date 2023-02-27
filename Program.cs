@@ -1,3 +1,4 @@
+using MasterJob.Helper;
 using MasterJob.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -37,6 +38,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors(policyName);
 app.UseAuthorization();
+//app.UseExceptionHandler("/error");
+//app.UseMiddleware<DatabaseRelationalExceptionHandlerMiddleware>();
 
 app.MapControllers();
 
